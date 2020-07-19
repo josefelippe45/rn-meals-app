@@ -22,9 +22,8 @@ const MealsNavgiator = createStackNavigator({
     //doing in this way we can set another configurations
     CategoryMeals: {
         screen: CategoryMealsScreen,
-
-        MealDetail: MealDetailScreen
     },
+    MealDetail: { screen: MealDetailScreen }
     //here we insert the secon argument, the defaultNavigationOptions applies its configuration to all screens
 }, {
     defaultNavigationOptions: {

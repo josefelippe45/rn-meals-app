@@ -1,6 +1,6 @@
 //here we select the categories in our app like: asian, italian and etc...
 import React from 'react';
-import { View, StyleSheet, Button, Text, TouchableNativeFeedback, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 //import data
 import { CATEGORIES } from '../data/dummy-data';
