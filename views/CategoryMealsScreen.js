@@ -1,35 +1,20 @@
 //loads the meals from a chosen category
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+
 //import our array of data
 import { CATEGORIES, MEALS } from '../data/dummy-data';
-import MealItem from '../components/MealItem';
+import MealList from '../components/MealList';
 
 const CategoryMealsScreen = props => {
-    //function to render a single item on our flatlist
-    const renderMealItem = itemData => {
-        return (<MealItem
-            title={itemData.item.title}
-            image={itemData.item.imageUrl}
-            duration={itemData.item.duration}
-            complexity={itemData.item.complexity}
-            affordability={itemData.item.affordability}
-            onSelectMeal={() => { props.navigation.navigate('MealDetail',
-            { mealId: itemData.item.id }) }} />)
-    }
+    
     //getting access to the parameter we passed on navigate
     const catId = props.navigation.getParam('categoryId');
     /**finding the meals that belong to the selected category filter will 
     run a function on every meal on that array */
     const displayedMeals = MEALS.filter(meals => meals.categoryIds.indexOf(catId) >= 0)
-
+    //nested components doesn't get access to navigation props, in this case we foward these props manually
     return (
-        /*the data that we wanna show is the displayedMeals
-         * renderItem points to a function where we render a single item of the list
-        */
-        <View style={styles.screen}>
-            <FlatList data={displayedMeals} renderItem={renderMealItem} style={{ width: '100%' }} />
-        </View>
+        <MealList listData={displayedMeals} navigation={props.navigation}/>
     );
 }
 //adding dynamic navigationOptions
@@ -44,13 +29,7 @@ CategoryMealsScreen.navigationOptions = navigationData => {
 };
 
 
-styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-});
+
 
 export default CategoryMealsScreen;
 
