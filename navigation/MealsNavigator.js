@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 //alternative navigator for bottomTabNavigator
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 //importing screens components
@@ -16,14 +16,22 @@ import CategoriesScreen from '../views/CategoriesScreen';
 import CategoryMealsScreen from '../views/CategoryMealsScreen';
 import MealDetailScreen from '../views/MealDetailScreen';
 import FavoritesScreen from '../views/FavoritesScreen';
+import FiltersScreen from '../views/FiltersScreen'
 import Colors from '../constants/Colors';
 
 
 //const that contains our default navigation options
 const defaultStackNavOptions = {
-
+    //only style the container itself
     headerStyle: {
         backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : '',
+    },
+    headerTitleStyle: {
+        fontFamily: 'open-sans-bold'
+    },
+    //more for ios
+    headerBackTitleStyle: {
+        fontFamily: 'open-sans'
     },
     headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
 
@@ -58,7 +66,11 @@ const tabScreenConfig = {
             tabBarIcon: (tabInfo) => {
                 return (<Ionicons name='ios-restaurant' size={25} color={tabInfo.tintColor} />);
             },
-            tabBarColor: Colors.primaryColor
+            tabBarColor: Colors.primaryColor,
+            //changing the color on android
+            tabBarLabel: Platform.OS === 'android'
+                ? <Text style={{ fontFamily: 'open-sans-bold' }}>Meals</Text>
+                : 'Meals'
         }
     },
     Favorites: {
@@ -66,7 +78,10 @@ const tabScreenConfig = {
             tabBarIcon: (tabInfo) => {
                 return (<Ionicons name='ios-star' size={25} color={tabInfo.tintColor} />);
             },
-            tabBarColor: Colors.secondaryColor
+            tabBarColor: Colors.secondaryColor,
+            tabBarLabel: Platform.OS === 'android'
+                ? <Text style={{ fontFamily: 'open-sans-bold' }}>Favorites</Text>
+                : 'Favorites'
         }
     },
 }
@@ -76,13 +91,50 @@ const tabScreenConfig = {
 const MealsFavTabNavigator = Platform.OS === 'android'
     ? createMaterialBottomTabNavigator(tabScreenConfig, {
         activeColor: 'white',
-        shifting: true
+        shifting: true,
+        barStyle: {
+            backgroundColor: Colors.primaryColor
+        }
     })
     : createBottomTabNavigator(tabScreenConfig, {
         tabBarOptions: {
+            //changing the font for IOS 
+            labelStyle: {
+                fontFamily: 'open-sans-bold'
+            },
             activeTintColor: Colors.secondaryColor
         }
     })
+//this nav will works only to give a header to FiltersScreen
+const FilterHead = createStackNavigator(
+    {
+        Filters: FiltersScreen,
+
+    },
+    {
+        //OPTION 1 - navigationOptions to change the name only of the filtersscreen
+        navigationOptions: { drawerLabel: 'Filters' },
+        defaultNavigationOptions: defaultStackNavOptions
+    })
+
+const MainNavigator = createDrawerNavigator({
+    MealsFav: {
+        screen: MealsFavTabNavigator,
+        //OPTION 2
+        navigationOptions: { drawerLabel: 'Meals' }
+    },
+    Filters: FilterHead,
+},
+    //seconde argument to style the drawerNavigator
+    {
+        contentOptions: {
+            activeTintColor: Colors.secondaryColor,
+            labelStyle: {
+                fontFamily: 'open-sans-bold'
+            }
+        }
+    }
+);
 /**we need to wrap our navigator with createAppContainer, so it will be the root navigator.
-  *the MealsFavTabNavigator has the MealsNavigator nested inside of it so it will be loaded as well.*/
-export default createAppContainer(MealsFavTabNavigator);
+  *the MainNavigator has the MealsNavigator nested inside of it so it will be loaded as well.*/
+export default createAppContainer(MainNavigator);
