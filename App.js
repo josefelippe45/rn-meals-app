@@ -2,14 +2,26 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { enableScreens } from 'react-native-screens';
+import { createStore, combineReducers } from 'redux';
+//helps to provide the store const to the application
+import { Provider } from 'react-redux';
 //import for the fonts
 import * as Font from 'expo-font';
 //this component will prolong the splash screens. in this case we'll use it to prolong till the fonts are loaded
 import { AppLoading } from 'expo';
 //import navigator
 import MealsNavigator from './navigation/MealsNavigator';
+import mealsReducer from './store/reducers/meals';
 
 enableScreens();
+//using combineReducers to merge all the reducers. In this case there's no need of it, but in apps
+//that we have like an auth reducer, a products reducers and etc, it would be nice to use combineReducers
+const rootReducers = combineReducers({
+  //map single reducers to keys
+  meals: mealsReducer
+})
+//setting up redux store
+const store = createStore(rootReducers);
 //here we'll load the fonts
 //loadAsync returns a promise, this way we can use it with AppLoading component
 const fetchFonts = () => {
@@ -36,7 +48,10 @@ export default function App() {
     );
   }
   return (
-    <MealsNavigator/>
+    //wrap provider to load the store const
+    <Provider store={store}>
+      <MealsNavigator />
+    </Provider>
   );
 }
 

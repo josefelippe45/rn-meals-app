@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
 
 const CategoryGridTile = props => {
-    //building a component to get a little bit of reponsive design
+    //building a component to get a little bit of responsive design
     let TouchableCmp = TouchableOpacity;
 
     if (Platform.OS === 'android' && Platform.Version >= 21) {
         TouchableCmp = TouchableNativeFeedback;
     }
-    //passing params with navigate we are fowarding the categoryId to the next screen
-    //when onPress onSelect, defined on CategoriesScreen, will  trigger 
+    //passing params with navigate we are forwarding the categoryId to the next screen
+    //when onPress onSelect, defined on CategoriesScreen, will  trigger
     return (
         <View style={styles.gridItem}>
             <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
@@ -23,6 +23,7 @@ const CategoryGridTile = props => {
             </TouchableCmp>
         </View>
     );
+    
 }
 
 const styles = StyleSheet.create({
