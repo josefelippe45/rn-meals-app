@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform, ImageBackground } from 'react-native';
 
 const CategoryGridTile = props => {
     //building a component to get a little bit of responsive design
     let TouchableCmp = TouchableOpacity;
-
     if (Platform.OS === 'android' && Platform.Version >= 21) {
         TouchableCmp = TouchableNativeFeedback;
     }
@@ -13,17 +12,19 @@ const CategoryGridTile = props => {
     return (
         <View style={styles.gridItem}>
             <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
-                <View
-                    style={{ ...styles.container, ...{ backgroundColor: props.color } }}
+                <ImageBackground
+                    source={{ uri: props.bg }}
+                    style={styles.bgImage}
                 >
-                    <Text style={styles.title} numberOfLines={2}>
-                        {props.title}
-                    </Text>
-                </View>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title} numberOfLines={2}>
+                            {props.title}
+                        </Text>
+                    </View>
+                </ImageBackground>
             </TouchableCmp>
         </View>
     );
-    
 }
 
 const styles = StyleSheet.create({
@@ -37,6 +38,18 @@ const styles = StyleSheet.create({
                 ? 'hidden'
                 : 'visible',
         elevation: 8,
+    },
+    titleContainer: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingVertical: 5,
+        paddingHorizontal: 12,
+        alignItems: 'flex-end',
+    },
+    bgImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'flex-end',
     },
     //shadow properties are for iOS while elevation is for android
     container: {
@@ -53,7 +66,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'open-sans-bold',
-        fontSize: 19,
+        fontSize: 20,
+        color: 'white',
         textAlign: 'right'
     }
 });

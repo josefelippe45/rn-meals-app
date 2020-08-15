@@ -9,7 +9,8 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 //alternative navigator for bottomTabNavigator
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Platform, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather, MaterialIcons  } from '@expo/vector-icons';
+
 
 //importing screens components
 import CategoriesScreen from '../views/CategoriesScreen';
@@ -18,6 +19,7 @@ import MealDetailScreen from '../views/MealDetailScreen';
 import FavoritesScreen from '../views/FavoritesScreen';
 import FiltersScreen from '../views/FiltersScreen'
 import Colors from '../constants/Colors';
+
 
 
 //const that contains our default navigation options
@@ -98,7 +100,7 @@ const MealsFavTabNavigator = Platform.OS === 'android'
     })
     : createBottomTabNavigator(tabScreenConfig, {
         tabBarOptions: {
-            //changing the font for IOS 
+            //changing the font for IOS
             labelStyle: {
                 fontFamily: 'open-sans-bold'
             },
@@ -116,25 +118,36 @@ const FilterHead = createStackNavigator(
         navigationOptions: { drawerLabel: 'Filters' },
         defaultNavigationOptions: defaultStackNavOptions
     })
-
 const MainNavigator = createDrawerNavigator({
     MealsFav: {
         screen: MealsFavTabNavigator,
         //OPTION 2
-        navigationOptions: { drawerLabel: 'Meals' }
+        navigationOptions: {
+            drawerLabel: 'Meals',
+            drawerIcon: <MaterialIcons name="restaurant" size={25} color={Colors.secondaryColor} />
+        }
     },
-    Filters: FilterHead,
+    Filters: {
+        screen: FilterHead,
+        //OPTION 2
+        navigationOptions: {
+            drawerLabel: 'Filters',
+            drawerIcon: <Feather name="filter" size={25} color={Colors.secondaryColor} />
+        }
+    },
 },
     //seconde argument to style the drawerNavigator
     {
         contentOptions: {
             activeTintColor: Colors.secondaryColor,
             labelStyle: {
-                fontFamily: 'open-sans-bold'
-            }
-        }
+                fontFamily: 'open-sans-bold',
+                fontSize: 18
+            },
+        },
     }
 );
+
 /**we need to wrap our navigator with createAppContainer, so it will be the root navigator.
   *the MainNavigator has the MealsNavigator nested inside of it so it will be loaded as well.*/
 export default createAppContainer(MainNavigator);
