@@ -57,6 +57,7 @@ const FiltersScreen = props => {
         this allows us to get to navigationOptions*/
         navigation.setParams({ save: saveFilters });
     }, [saveFilters]);
+    //handle that sets search
     return (
         <View style={styles.screen}>
             <Text style={styles.title}>Available Filters / Restrictions</Text>
@@ -86,8 +87,7 @@ FiltersScreen.navigationOptions = navData => {
         headerRight: (() => <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <Item title="Save" iconName={Platform.OS === 'android' ? "md-save" : "ios-save"}
                 onPress={
-                    //retrieving that save parameter that we get with useEffect
-                    navData.navigation.getParam('save')
+                    ()=>{}
                 } />
         </HeaderButtons>),
     };
